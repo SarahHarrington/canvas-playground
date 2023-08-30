@@ -1,4 +1,11 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   background-color: #5E6472;
   margin: 0;
+  font-family: 'Unica One', cursive;
 }

@@ -1,3 +1,81 @@
 .App {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 20px;
+  justify-items: center;
+  width: 95vw;
   background-color: #5E6472;
+
+  h1 {
+    margin: 0;
+    font-size: 8rem;
+    font-family: 'Qwitcher Grypen', cursive;
+    background-image: linear-gradient(to left bottom, #ffa69e, #ffb6a1, #fdc5a8, #fbd4b4, #f9e2c4, #f1e7c9, #eaebcf, #e5eed7, #d4ead6, #c4e5d8, #b7e0dc, #aed9e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  label {
+    font-size: 3rem;
+    color: #FFA69E;
+  }
+
+  input {
+    width: 50vw;
+    height: 10vh;
+    font-size: 2.5rem;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Unica One', cursive;
+  }
+}
+
+.start-button {
+  width: 30vw;
+  height: 8vh;
+  border-radius: 10px;
+  border: none;
+  background-color: #AED9E0;
+  font-size: 2rem;
+  font-family: 'Unica One', cursive;
+}
+
+.paint-button {
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  justify-content: center;
+  margin: 0.3rem;
+  padding: 0.6rem;
+  position: relative;
+  height: 3.2rem;
+  width: 3.2rem;
+
+  &:hover {
+    border-radius: 50%;
+    background: rgba(250, 243, 221, 0.5);
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 0 0 rgba(#FAF3DD, .5);
+  }
+
+  &:active {
+    transform: scale();
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(.9);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 7px rgba(#FAF3DD, 0);
+  }
+    100% {
+    transform: scale(.9);
+    box-shadow: 0 0 0 0 rgba(#FAF3DD, 0);
+  }
 }
