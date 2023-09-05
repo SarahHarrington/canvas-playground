@@ -64,6 +64,11 @@
   &:active {
     transform: scale();
   }
+
+  &.selected {
+    border-radius: 50%;
+    background: rgba(250, 243, 221, 0.5);
+  }
 }
 
 @keyframes pulse {

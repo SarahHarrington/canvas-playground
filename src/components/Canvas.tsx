@@ -5,7 +5,7 @@ import { IncomingDraw } from '../App';
 interface CanvasProps {
   height: number;
   width: number;
-  color: string;
+  activeColor: string;
   canvasColor: string;
   updateDraw: Function;
   incomingDraw: IncomingDraw | null;
@@ -16,7 +16,7 @@ interface Coordinates {
   y: number
 }
 
-export default function Canvas({height, width, color, canvasColor, updateDraw, incomingDraw}: CanvasProps) {
+export default function Canvas({height, width, activeColor, canvasColor, updateDraw, incomingDraw}: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isPainting, setIsPainting] = useState(false);
   const [mousePosition, setMousePosition] = useState<Coordinates | undefined>(undefined);
@@ -76,7 +76,7 @@ export default function Canvas({height, width, color, canvasColor, updateDraw, i
     const canvas: HTMLCanvasElement = canvasRef.current;
     const context = canvas.getContext('2d');
     if (context) {
-        context.strokeStyle = `${color}`;
+        context.strokeStyle = `${activeColor}`;
         context.lineJoin = 'round';
         context.lineWidth = 5;
         context.beginPath();
@@ -88,7 +88,7 @@ export default function Canvas({height, width, color, canvasColor, updateDraw, i
 
     if (externalDraw) return
     const drawElementForServer = {
-      color: color,
+      color: activeColor,
       lineWidth: 5,
       mouseStart: {x: originalMousePosition.x, y: originalMousePosition.y},
       mouseEnd: {x: newMousePosition.x, y: newMousePosition.y},

@@ -1,7 +1,9 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react';
+import React, { useState, useEffect, SyntheticEvent, ReactEventHandler } from 'react';
 import { socket } from './socket';
 import './App.scss';
 import Canvas from './components/Canvas'
+import Pen from './components/Pen'
+import { pastelColors, brightRainbowColors } from './colors';
 
 export interface IncomingDraw {
   color: string;
@@ -21,55 +23,24 @@ interface Item {
   userName?: string;
 }
 
+interface Pen {
+  value: string;
+  name: string;
+  selected?: boolean;
+}
+
 function App() {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [users, setUsers] = useState<string[]>([]);
   const [userCount, setUserCount] = useState<number>(0)
   const [items, setItems] = useState<Item[]>([])
-  const [color, setColor] = useState<string>('black')
+  const [activeColor, setActiveColor] = useState<string>('black')
   const [canvasColor, setCanvasColor] = useState<string>('white');
   const [incomingDraw, setIncomingDraw] = useState<IncomingDraw | null>(null)
   const [showCanvas, setShowCanvas] = useState<boolean>(false)
   const [userName, setUserName] = useState<string>('')
-
-  const colors = [
-    {
-      name: 'Melon',
-      value: '#FFADAD'
-    },
-    {
-      name: 'Sunset',
-      value: '#FFD6A5'
-    },
-    {
-      name: 'Cream',
-      value: '#FDFFB6'
-    },
-    {
-      name: 'Green Tea',
-      value: '#CAFFBF'
-    },
-    {
-      name: 'Electric Blue',
-      value: '#9BF6FF'
-    },
-    {
-      name: 'Jordy Blue',
-      value: '#A0C4FF'
-    },
-    {
-      name: 'Periwinkle',
-      value: '#BDB2FF'
-    },
-    {
-      name: 'Mauve',
-      value: '#FFC6FF'
-    },
-    {
-      name: 'Baby Powder',
-      value: '#FFFFFC'
-    },
-  ]
+  const [pens, setPens] = useState('')
+  const [colors, setColors] = useState<Pen[] | []>([])
 
   useEffect(() => {
     localStorage.setItem('items', JSON.stringify(items));
@@ -121,6 +92,16 @@ function App() {
     }
   }, [])
 
+  useEffect(() => {
+    let newColors: Pen[] = []
+    if (pens === 'brightRainbowColors') {
+      setColors(brightRainbowColors)
+    }
+    if (pens === 'pastelColors') {
+      setColors(pastelColors)
+    }
+  }, [pens])
+
   function updateUserName(e: any) {
     setUserName(e.currentTarget.value)
   }
@@ -133,8 +114,7 @@ function App() {
   }
 
   function changeColor(event: any) {
-    console.log('changeColor event', event)
-    setColor(event.currentTarget.value)
+    setActiveColor(event.currentTarget.value)
   }
 
   function updateCanvasColor(event: any) {
@@ -143,6 +123,10 @@ function App() {
 
   function updateDraw(drawElementForServer: object) {
     socket.emit('userIsDrawing', drawElementForServer)
+  }
+
+  function updatePenColors(event: any) {
+    setPens(event.target.value)
   }
 
   return (
@@ -164,15 +148,20 @@ function App() {
             <button value='white' onClick={updateCanvasColor}>white</button>
           </div>
           <div>
+            colors:
+              <button value='pastelColors' onClick={updatePenColors}>pastels</button>
+              <button value='brightRainbowColors' onClick={updatePenColors}>brights</button>
+          </div>
+          <div>
             Select a color:
             {colors.map((color) => (
-              <button className='paint-button' value={color.value} onClick={changeColor}><span className='material-symbols-outlined' style={{color: `${color.value}`}}>brush</span></button>
+              <Pen key={color.value} color={color} changeColor={changeColor} activeColor={activeColor}/>
             ))}
           </div>
           <Canvas 
             height={600}
             width={900}
-            color={color}
+            activeColor={activeColor}
             canvasColor={canvasColor}
             updateDraw={updateDraw}
             incomingDraw={incomingDraw}
