@@ -11,14 +11,8 @@ interface PenProps {
 }
 
 export default function Pen({ color, activeColor, changeColor }: PenProps) {
-  // const [isSelected, setIsSelected] = useState<boolean>(color.selected = false);
-
-  function onSelectPen(event: any) {
-    changeColor(event)
-  }
-  
   return (
-    <button className={`paint-button ${activeColor === color.value ? 'selected' : ''}`} value={color.value} onClick={onSelectPen}>
+    <button className={`paint-button ${activeColor === color.value ? 'selected' : ''}`} value={color.value} onClick={changeColor}>
       <span className='material-symbols-outlined' style={{color: `${color.value}`}}>brush</span>
     </button>
   )

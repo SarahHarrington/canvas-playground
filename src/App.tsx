@@ -26,7 +26,6 @@ interface Item {
 interface Pen {
   value: string;
   name: string;
-  selected?: boolean;
 }
 
 function App() {
